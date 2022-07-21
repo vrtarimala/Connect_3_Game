@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+    boolean finished;
     Button play;
     Coin pos00,pos01,pos02,pos10,pos11,pos12,pos20,pos21,pos22;
     int[] gameState={0,0,0,0,0,0,0,0,0};
@@ -50,11 +51,16 @@ public class MainActivity extends AppCompatActivity {
         pos21=new Coin((ImageView) findViewById(R.id.imageView8),2,1 );
         pos22=new Coin((ImageView) findViewById(R.id.imageView9),2,2 );
         play=(Button) findViewById(R.id.button);
+        finished=false;
 
 
     }
     public void onClick(View view){
-
+        if(finished==true)
+        {
+            Toast.makeText(this,"Sorry,Game Over!",Toast.LENGTH_SHORT).show();
+            return;
+        }
         ImageView imageView=(ImageView) view;
         if(imageView.getAlpha()==1){
             Toast.makeText(this,"Already filled",Toast.LENGTH_SHORT).show();
@@ -95,12 +101,13 @@ public class MainActivity extends AppCompatActivity {
                 if(col==1){
                     Toast.makeText(this,"Red has Won!",Toast.LENGTH_LONG).show();
                     play.animate().alpha(1).setDuration(1000);
-
+                    finished=true;
                     break;
                 }
                 else if(col==2){
                     Toast.makeText(this,"Yellow has Won!",Toast.LENGTH_LONG).show();
                     play.animate().alpha(1).setDuration(1000);
+                    finished=true;
                     break;
                 }
             }
@@ -137,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
         pos21.imageViewLoc.animate().alpha(0).setDuration(10);
         pos22.imageViewLoc.animate().alpha(0).setDuration(10);
         play.animate().alpha(0).setDuration(1000);
+        finished=false;
 
     }
 }
