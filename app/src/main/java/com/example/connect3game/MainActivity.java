@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     boolean finished;
+    boolean tie;
     Button play;
     Coin pos00,pos01,pos02,pos10,pos11,pos12,pos20,pos21,pos22;
     int[] gameState={0,0,0,0,0,0,0,0,0};
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         pos22=new Coin((ImageView) findViewById(R.id.imageView9),2,2 );
         play=(Button) findViewById(R.id.button);
         finished=false;
+        tie=true;
 
 
     }
@@ -99,18 +101,36 @@ public class MainActivity extends AppCompatActivity {
         for(int[] winningPosition: winningPositions){
             if(gameState[winningPosition[0]]==gameState[winningPosition[1]] && gameState[winningPosition[1]]== gameState[winningPosition[2]] && gameState[winningPosition[0]]!=0){
                 if(col==1){
-                    Toast.makeText(this,"Red has Won!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(this,"Red has Won!",Toast.LENGTH_SHORT).show();
                     play.animate().alpha(1).setDuration(1000);
                     finished=true;
-                    break;
+                    //break;
+                    return;
                 }
                 else if(col==2){
-                    Toast.makeText(this,"Yellow has Won!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(this,"Yellow has Won!",Toast.LENGTH_SHORT).show();
                     play.animate().alpha(1).setDuration(1000);
                     finished=true;
-                    break;
+                    return;
+                    //break;
                 }
             }
+
+        }
+        for(int i=0;i< gameState.length;i++){
+            if(gameState[i]==0){
+                tie=false;
+                break;
+            }
+            else
+                tie=true;
+        }
+        if(tie==true){
+            Toast.makeText(this,"Tie! Play again.",Toast.LENGTH_LONG).show();
+            play.animate().alpha(1).setDuration(1000);
+            tie=false;
+            finished=true;
+            return;
         }
         if(col==1){
             col=2;
@@ -130,8 +150,8 @@ public class MainActivity extends AppCompatActivity {
 //        return true;
 //    }
     public void refresh(View view){
-        for(int pos:gameState){
-            gameState[pos]=0;
+        for(int i=0;i<gameState.length;i++){
+            gameState[i]=0;
         }
         col=1;
         pos00.imageViewLoc.animate().alpha(0).setDuration(10);
@@ -143,8 +163,9 @@ public class MainActivity extends AppCompatActivity {
         pos20.imageViewLoc.animate().alpha(0).setDuration(10);
         pos21.imageViewLoc.animate().alpha(0).setDuration(10);
         pos22.imageViewLoc.animate().alpha(0).setDuration(10);
-        play.animate().alpha(0).setDuration(1000);
+        play.animate().alpha(0).setDuration(200);
         finished=false;
+        tie=true;
 
     }
 }
